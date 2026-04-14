@@ -1,2 +1,2 @@
 # Dress-Up-Game
-A drag and drop character dress up game.
+A customizable character dress-up game.
