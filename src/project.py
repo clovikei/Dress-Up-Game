@@ -1,5 +1,4 @@
 import pygame
-import os
 import sys
 
 def import_assets():
@@ -36,6 +35,10 @@ def import_assets():
         "bottoms": bottoms
     }
 
+def wardrobe(screen, assets, panel):
+    pygame.draw.rect(screen, (255, 220, 235), panel, border_radius=16)
+    pygame.draw.rect(screen, (200, 150, 170), panel, width=2, border_radius=16)
+
 def main():
     pygame.init()
     pygame.display.set_caption("Dress-Up Game")
@@ -43,26 +46,20 @@ def main():
     screen = pygame.display.set_mode(resolution)
     clock = pygame.time.Clock()
     assets = import_assets()
+    panel = pygame.Rect(540, 30, 230, 540)
     character = assets["character"]
     running = True
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-        screen.fill('Green')
-        screen.blit(character, (250, 50))
+        screen.fill((255, 240, 248))
+        screen.blit(character, (125, 75))
+        clothing_panel = wardrobe(screen, assets, panel)
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
 
-#TODO: Import assets, clickable UI, sounds
-#character name is oguri
-
-
-#def function_2():
-
-
-#def function_n():
 
 
 if __name__ == "__main__":
