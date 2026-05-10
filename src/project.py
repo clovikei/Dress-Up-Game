@@ -35,9 +35,28 @@ def import_assets():
         "bottoms": bottoms
     }
 
-def wardrobe(screen, assets, panel):
+# one box
+def wardrobe(screen, assets, panel,):
     pygame.draw.rect(screen, (255, 220, 235), panel, border_radius=16)
     pygame.draw.rect(screen, (200, 150, 170), panel, width=2, border_radius=16)
+    font = pygame.font.SysFont("markerfelt", 18)
+    box_width = 100
+    box_height = 100
+    start_x = panel.x + (panel.width - box_width) // 2
+    start_y = panel.y + 40
+    spacing = 180
+    categories = ["hat", "top", "bottom"]
+
+    #add hat top + bot squares and text
+    for i, label in enumerate(categories):
+        y = start_y + i * spacing
+
+        box = pygame.Rect(start_x, y, box_width, box_height)
+        pygame.draw.rect(screen, (255, 255, 255), box, border_radius=10)
+        pygame.draw.rect(screen, (200, 150, 170), box, 2, border_radius=10)
+
+        text = font.render(label, True, (100, 50, 70))
+        screen.blit(text, (box.centerx - text.get_width() // 2, y - 25))
 
 def main():
     pygame.init()
@@ -55,7 +74,7 @@ def main():
                 running = False
         screen.fill((255, 240, 248))
         screen.blit(character, (125, 75))
-        clothing_panel = wardrobe(screen, assets, panel)
+        wardrobe(screen, assets, panel)
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
