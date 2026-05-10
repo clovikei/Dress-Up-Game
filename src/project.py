@@ -32,11 +32,18 @@ def import_assets():
         "character": base_character,
         "hats": hats,
         "tops": tops,
-        "bottoms": bottoms
+        "bottoms": bottoms,
+
+        "hat_ui": thumbnails(hats),
+        "top_ui": thumbnails(tops),
+        "bottom_ui": thumbnails(bottoms)
     }
 
-# one box
-def wardrobe(screen, assets, panel,):
+#add thumbnail images to 3 boxes
+def thumbnails(images):
+    return [pygame.transform.smoothscale(img, (70, 70)) for img in images]
+
+def wardrobe(screen, assets, panel):
     pygame.draw.rect(screen, (255, 220, 235), panel, border_radius=16)
     pygame.draw.rect(screen, (200, 150, 170), panel, width=2, border_radius=16)
     font = pygame.font.SysFont("markerfelt", 18)
@@ -46,14 +53,17 @@ def wardrobe(screen, assets, panel,):
     start_y = panel.y + 40
     spacing = 180
     categories = ["hat", "top", "bottom"]
+    ui = ["hat_ui", "top_ui", "bottom_ui"]
 
-    #add hat top + bot squares and text
     for i, label in enumerate(categories):
         y = start_y + i * spacing
 
         box = pygame.Rect(start_x, y, box_width, box_height)
         pygame.draw.rect(screen, (255, 255, 255), box, border_radius=10)
         pygame.draw.rect(screen, (200, 150, 170), box, 2, border_radius=10)
+
+        thumbnails = assets[ui[i]][0]
+        screen.blit(thumbnails, (box.x + 15, box.y + 15))
 
         text = font.render(label, True, (100, 50, 70))
         screen.blit(text, (box.centerx - text.get_width() // 2, y - 25))
