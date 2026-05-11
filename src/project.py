@@ -114,8 +114,12 @@ def main():
                         if i == 2: bottom_idx = (bottom_idx + 1) % n
         screen.fill((255, 240, 248))
         screen.blit(character, (125, 75))
+        screen.blit(assets["bottoms"][bottom_idx], (125, 75))
+        screen.blit(assets["tops"][top_idx], (125, 75))
+        screen.blit(assets["hats"][hat_idx], (125, 75))
         buttons = wardrobe (screen, assets, panel, hat_idx, top_idx, bottom_idx)
-        pygame.display.flip()
+        pygame.display
+        .flip()
         clock.tick(60)
     pygame.quit()
 
