@@ -1,5 +1,6 @@
 import pygame
 import sys
+import random
 
 def import_assets():
 
@@ -38,6 +39,15 @@ def import_assets():
         "top_ui": thumbnails(tops),
         "bottom_ui": thumbnails(bottoms)
     }
+
+def random_button(screen, font):
+    button_shape = pygame.Rect(200, 470, 160, 40)
+    button_color = (255, 160, 190) if button_shape.collidepoint(pygame.mouse.get_pos()) else (230, 130, 160)
+    button_text = font.render("randomize", True, (255, 255, 255))
+    pygame.draw.rect(screen, button_color, button_shape, border_radius=10)
+    screen.blit(button_text, (button_shape.centerx - button_text.get_width() // 2,
+                              button_shape.centery - button_text.get_height() //2))
+    return button_shape
 
 def thumbnails(images):
     return [pygame.transform.smoothscale(img, (70, 70)) for img in images]
@@ -95,12 +105,15 @@ def main():
     resolution = (800, 600)
     screen = pygame.display.set_mode(resolution)
     clock = pygame.time.Clock()
+    font = pygame.font.SysFont("markerfelt", 18)
     assets = import_assets()
     hat_idx = 0
     top_idx = 0
     bottom_idx = 0
     panel = pygame.Rect(540, 30, 230, 540)
     character = assets["character"]
+    random_rect = None
+    buttons = []
     running = True
     while running:
         for event in pygame.event.get():
@@ -108,6 +121,12 @@ def main():
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
                 for i, (left_box, right_box) in enumerate(buttons):
+                    if random_rect and random_rect.collidepoint(event.pos):
+                        button_sfx.play()
+                        hat_idx = random.randint(0, len(assets["hat_ui"]) - 1)
+                        top_idx = random.randint(0, len(assets["top_ui"]) - 1)
+                        bottom_idx = random.randint(0, len(assets["bottom_ui"]) - 1)
+
                     if i == 0: n = len(assets["hat_ui"])
                     if i == 1: n = len(assets["top_ui"])
                     if i == 2: n = len(assets["bottom_ui"])
@@ -127,6 +146,7 @@ def main():
         screen.blit(assets["tops"][top_idx], (125, 75))
         screen.blit(assets["hats"][hat_idx], (125, 75))
         buttons = wardrobe (screen, assets, panel, hat_idx, top_idx, bottom_idx)
+        random_rect = random_button(screen, font)
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
