@@ -103,6 +103,8 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                print(buttons)
         screen.fill((255, 240, 248))
         screen.blit(character, (125, 75))
         buttons = wardrobe (screen, assets, panel, hat_idx, top_idx, bottom_idx)
