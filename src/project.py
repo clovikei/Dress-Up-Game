@@ -88,6 +88,9 @@ def main():
     pygame.mixer.music.load("assets/Cloud_Dancer.mp3")
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.5)
+    button_sfx = pygame.mixer.Sound("assets/pop_sfx.wav")
+    button_sfx.set_volume(0.3)
+
     pygame.display.set_caption("Dress-Up Game")
     resolution = (800, 600)
     screen = pygame.display.set_mode(resolution)
@@ -109,10 +112,12 @@ def main():
                     if i == 1: n = len(assets["top_ui"])
                     if i == 2: n = len(assets["bottom_ui"])
                     if left_box.collidepoint(event.pos):
+                        button_sfx.play()
                         if i == 0: hat_idx = (hat_idx - 1) % n
                         if i == 1: top_idx = (top_idx - 1) % n
                         if i == 2: bottom_idx = (bottom_idx - 1) % n
                     if right_box.collidepoint(event.pos):
+                        button_sfx.play()
                         if i == 0: hat_idx = (hat_idx + 1) % n
                         if i == 1: top_idx = (top_idx + 1) % n
                         if i == 2: bottom_idx = (bottom_idx + 1) % n
