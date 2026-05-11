@@ -67,18 +67,14 @@ def wardrobe(screen, assets, panel, hat_idx, top_idx, bottom_idx):
         thumbnails = assets[ui[i]][idx[i]]
         screen.blit(thumbnails, (box.x + 15, box.y + 15))
 
-        # arrows
-        font.render("<", True, (200, 130, 160))
-        font.render(">", True, (200, 130, 160))
-
-        left_arrow  = font.render("<", True, (200, 130, 160))
-        right_arrow = font.render(">", True, (200, 130, 160))
+        left_arrow  = font.render("<", True, (255, 255, 255))
+        right_arrow = font.render(">", True, (255, 255, 255))
         left_box = pygame.Rect(panel.x + 20, box.centery - 15, 30, 30)
         right_box = pygame.Rect(panel.right - 50, box.centery - 15, 30, 30)
         pygame.draw.rect(screen, (230, 130, 160), left_box, border_radius=6)
         pygame.draw.rect(screen, (230, 130, 160), right_box, border_radius=6)
-        screen.blit(left_arrow, (left_box.x + 8, left_box.y +3))
-        screen.blit(right_arrow, (right_box.x +8, right_box.y + 3))
+        screen.blit(left_arrow, (left_box.x + 10, left_box.y +3))
+        screen.blit(right_arrow, (right_box.x +10, right_box.y + 3))
 
         text = font.render(label, True, (100, 50, 70))
         screen.blit(text, (box.centerx - text.get_width() // 2, y - 25))
@@ -104,7 +100,18 @@ def main():
             if event.type == pygame.QUIT:
                 running = False
             if event.type == pygame.MOUSEBUTTONDOWN:
-                print(buttons)
+                for i, (left_box, right_box) in enumerate(buttons):
+                    if i == 0: n = len(assets["hat_ui"])
+                    if i == 1: n = len(assets["top_ui"])
+                    if i == 2: n = len(assets["bottom_ui"])
+                    if left_box.collidepoint(event.pos):
+                        if i == 0: hat_idx = (hat_idx - 1) % n
+                        if i == 1: top_idx = (top_idx - 1) % n
+                        if i == 2: bottom_idx = (bottom_idx - 1) % n
+                    if right_box.collidepoint(event.pos):
+                        if i == 0: hat_idx = (hat_idx + 1) % n
+                        if i == 1: top_idx = (top_idx + 1) % n
+                        if i == 2: bottom_idx = (bottom_idx + 1) % n
         screen.fill((255, 240, 248))
         screen.blit(character, (125, 75))
         buttons = wardrobe (screen, assets, panel, hat_idx, top_idx, bottom_idx)
