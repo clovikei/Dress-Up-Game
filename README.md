@@ -1,4 +1,4 @@
-# Dress-Up-Game
+# Dress Up Oguri!
 
 ## Demo
 Video Demo: https://www.youtube.com/watch?v=p5NFPlKd2Dg 
