@@ -84,6 +84,10 @@ def wardrobe(screen, assets, panel, hat_idx, top_idx, bottom_idx):
 
 def main():
     pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load("assets/Cloud_Dancer.mp3")
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
     pygame.display.set_caption("Dress-Up Game")
     resolution = (800, 600)
     screen = pygame.display.set_mode(resolution)
@@ -118,8 +122,7 @@ def main():
         screen.blit(assets["tops"][top_idx], (125, 75))
         screen.blit(assets["hats"][hat_idx], (125, 75))
         buttons = wardrobe (screen, assets, panel, hat_idx, top_idx, bottom_idx)
-        pygame.display
-        .flip()
+        pygame.display.flip()
         clock.tick(60)
     pygame.quit()
 
