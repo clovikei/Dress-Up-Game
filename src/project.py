@@ -39,11 +39,10 @@ def import_assets():
         "bottom_ui": thumbnails(bottoms)
     }
 
-#add thumbnail images to 3 boxes
 def thumbnails(images):
     return [pygame.transform.smoothscale(img, (70, 70)) for img in images]
 
-def wardrobe(screen, assets, panel):
+def wardrobe(screen, assets, panel, hat_idx, top_idx, bottom_idx):
     pygame.draw.rect(screen, (255, 220, 235), panel, border_radius=16)
     pygame.draw.rect(screen, (200, 150, 170), panel, width=2, border_radius=16)
     font = pygame.font.SysFont("markerfelt", 18)
@@ -53,6 +52,8 @@ def wardrobe(screen, assets, panel):
     start_y = panel.y + 40
     spacing = 180
     categories = ["hat", "top", "bottom"]
+    idx = [hat_idx, top_idx, bottom_idx]
+    buttons = []
     ui = ["hat_ui", "top_ui", "bottom_ui"]
 
     for i, label in enumerate(categories):
@@ -61,12 +62,29 @@ def wardrobe(screen, assets, panel):
         box = pygame.Rect(start_x, y, box_width, box_height)
         pygame.draw.rect(screen, (255, 255, 255), box, border_radius=10)
         pygame.draw.rect(screen, (200, 150, 170), box, 2, border_radius=10)
-
-        thumbnails = assets[ui[i]][0]
+        
+        idx = [hat_idx, top_idx, bottom_idx]
+        thumbnails = assets[ui[i]][idx[i]]
         screen.blit(thumbnails, (box.x + 15, box.y + 15))
+
+        # arrows
+        font.render("<", True, (200, 130, 160))
+        font.render(">", True, (200, 130, 160))
+
+        left_arrow  = font.render("<", True, (200, 130, 160))
+        right_arrow = font.render(">", True, (200, 130, 160))
+        left_box = pygame.Rect(panel.x + 20, box.centery - 15, 30, 30)
+        right_box = pygame.Rect(panel.right - 50, box.centery - 15, 30, 30)
+        pygame.draw.rect(screen, (230, 130, 160), left_box, border_radius=6)
+        pygame.draw.rect(screen, (230, 130, 160), right_box, border_radius=6)
+        screen.blit(left_arrow, (left_box.x + 8, left_box.y +3))
+        screen.blit(right_arrow, (right_box.x +8, right_box.y + 3))
 
         text = font.render(label, True, (100, 50, 70))
         screen.blit(text, (box.centerx - text.get_width() // 2, y - 25))
+
+        buttons.append((left_box, right_box))
+    return buttons
 
 def main():
     pygame.init()
@@ -75,6 +93,9 @@ def main():
     screen = pygame.display.set_mode(resolution)
     clock = pygame.time.Clock()
     assets = import_assets()
+    hat_idx = 0
+    top_idx = 0
+    bottom_idx = 0
     panel = pygame.Rect(540, 30, 230, 540)
     character = assets["character"]
     running = True
@@ -84,7 +105,7 @@ def main():
                 running = False
         screen.fill((255, 240, 248))
         screen.blit(character, (125, 75))
-        wardrobe(screen, assets, panel)
+        buttons = wardrobe (screen, assets, panel, hat_idx, top_idx, bottom_idx)
         pygame.display.flip()
         clock.tick(60)
     pygame.quit()
